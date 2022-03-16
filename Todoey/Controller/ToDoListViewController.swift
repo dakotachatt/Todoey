@@ -46,6 +46,13 @@ class ToDoListViewController: UITableViewController {
         
         let item = itemArray[indexPath.row]
         
+        //Able to update it's title to "Completed" upon click, update based on what you want to do with it
+//        itemArray[indexPath.row].setValue("Completed", forKey: "title")
+        
+        //To delete a row, .remove removes item from itemArray and users view, need the .delete statement if wanting to delete from the DB, but still need to save context (see saveItems method) for it to be official. Order is important, need to .delete first, then .remove due to indexPath.row messing things up. NOTE: Should be able to just do the .delete statment as everything should be reloaded after saving
+//        context.delete(itemArray[indexPath.row])
+//        itemArray.remove(at: indexPath.row)
+        
         //Toggles done property instead of using multi line if else statement
         item.done = !item.done
         
@@ -87,8 +94,6 @@ class ToDoListViewController: UITableViewController {
     //MARK: - Model Manipulation Methods
     
     func saveItems() {
-        let encoder = PropertyListEncoder()
-        
         do {
             try context.save()
         } catch {
