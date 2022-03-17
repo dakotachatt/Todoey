@@ -11,7 +11,8 @@ import CoreData
 
 class ToDoListViewController: UITableViewController {
     
-    var itemArray: [Item] = []
+    var itemArray : [Item] = []
+    
     //Shared is a singleton object, this is used to access context in AppDelegate
     let context = (UIApplication.shared.delegate as! AppDelegate).persistentContainer.viewContext
     
@@ -67,11 +68,11 @@ class ToDoListViewController: UITableViewController {
         
         var textField = UITextField()
         
-        let alert = UIAlertController(title: "Add New To Do", message: "", preferredStyle: .alert)
+        let alert = UIAlertController(title: "Create New To Do", message: "", preferredStyle: .alert)
         
-        let action = UIAlertAction(title: "Add Item", style: .default) { (action) in
-            // What will happen once the user clicks the add item button on UI Alert
+        let action = UIAlertAction(title: "Create Item", style: .default) { (action) in
             
+            // What will happen once the user clicks the add item button on UI Alert
             let newItem = Item(context: self.context)
             newItem.title = textField.text!
             newItem.done = false
@@ -82,7 +83,7 @@ class ToDoListViewController: UITableViewController {
         }
         
         alert.addTextField { (alertTextField) in
-            alertTextField.placeholder = "Create New To Do"
+            alertTextField.placeholder = "Create New Item"
             textField = alertTextField
         }
         
