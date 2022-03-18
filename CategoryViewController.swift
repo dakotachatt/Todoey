@@ -18,7 +18,7 @@ class CategoryViewController: UITableViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        loadItems()
+        loadCategories()
     }
 
     //MARK: - Add New Categories
@@ -39,7 +39,7 @@ class CategoryViewController: UITableViewController {
             
             self.categoryArray.append(newCategory)
             
-            self.saveItems()
+            self.saveCategories()
         }
         
         alert.addAction(action)
@@ -60,20 +60,33 @@ class CategoryViewController: UITableViewController {
         return cell
     }
     
+    //MARK: - TableView Delegate Methods
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        performSegue(withIdentifier: "goToItems", sender: self)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let destinationVC = segue.destination as! ToDoListViewController
+        
+        // Since we can't directly access the didSelectRowAt from the tableView fxn above, need to have this to grab data from currently selected row
+        if let indexPath = tableView.indexPathForSelectedRow {
+            destinationVC.selectedCategory = categoryArray[indexPath.row]
+        }
+    }
     
     
     //MARK: - Data Manipulation Methods
-    func saveItems() {
+    func saveCategories() {
         do {
             try context.save()
         } catch {
             print("Error saving context: \(error)")
         }
         
-        self.tableView.reloadData()
+        tableView.reloadData()
     }
     
-    func loadItems(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
+    func loadCategories(with request: NSFetchRequest<Category> = Category.fetchRequest()) {
         do {
             categoryArray = try context.fetch(request)
         } catch {
@@ -83,6 +96,8 @@ class CategoryViewController: UITableViewController {
         tableView.reloadData()
     }
     
-    //MARK: - TableView Delegate Methods
+
+    
+    
     
 }
